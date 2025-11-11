@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "强制启用 HEVC 解码",
+  "name": "HEVC解码 - 强制启用",
   "description": "解锁 Edge 浏览器内置 HEVC 支持，防止不必要的视频转码，支持 飞牛影视、Emby 等媒体中心",
   "version": "1.0.0",
   "permissions": [

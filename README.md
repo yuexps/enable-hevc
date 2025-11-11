@@ -19,7 +19,7 @@
 
 - 播放视频时自动启用 HEVC 支持
 - 如果视频播放有声音无画面，说明系统不支持 HEVC
-- 前往 Microsoft Store 安装 HEVC 扩展：[安装 HEVC 扩展](ms-windows-store://pdp/?ProductId=9n4wgh0z6vhq)
+- 前往 Microsoft Store 安装 HEVC 扩展：ms-windows-store://pdp/?ProductId=9n4wgh0z6vhq
 
 ## 工作原理
 
