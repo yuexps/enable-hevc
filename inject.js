@@ -3,27 +3,41 @@
 (function() {
   'use strict';
 
+  // 默认启用，等待初始化消息
+  let hevcEnabled = true;
+  let initialized = false;
+
   try {
     const originalCanPlayType = HTMLMediaElement.prototype.canPlayType;
     const hevcPattern = /hev1|hvc1|hevc|h\.?265/i;
 
-    // 始终拦截 canPlayType，确保返回支持 HEVC
     HTMLMediaElement.prototype.canPlayType = function(type) {
-      if (hevcPattern.test(type)) {
-        return 'maybe';
-      }
-      return originalCanPlayType.call(this, type);
+      return hevcEnabled && hevcPattern.test(type) ? 'maybe' : originalCanPlayType.call(this, type);
     };
 
-    // 同时拦截 MediaSource API
     if (window.MediaSource?.isTypeSupported) {
       const original = window.MediaSource.isTypeSupported;
       window.MediaSource.isTypeSupported = function(type) {
-        if (hevcPattern.test(type)) {
-          return true;
-        }
-        return original.call(this, type);
+        return hevcEnabled && hevcPattern.test(type) ? true : original.call(this, type);
       };
     }
-  } catch (e) {}
+  } catch (e) {
+    // Silent fail
+  }
+
+  // 监听消息
+  window.addEventListener('message', (event) => {
+    if (event.source === window) {
+      if (event.data.type === 'HEVC_INIT' && !initialized) {
+        // 初始化消息
+        hevcEnabled = event.data.enabled;
+        initialized = true;
+        // 触发就绪事件
+        window.dispatchEvent(new CustomEvent('hevc-extension-ready', { detail: { enabled: hevcEnabled } }));
+      } else if (event.data.type === 'HEVC_TOGGLE') {
+        // 切换消息
+        hevcEnabled = event.data.enabled;
+      }
+    }
+  });
 })();

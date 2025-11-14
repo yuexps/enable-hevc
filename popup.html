@@ -1,20 +1,29 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>强制启用 HEVC 解码</title>
+    <title data-i18n="popupTitle"></title>
     <link rel="stylesheet" href="popup.css">
 </head>
 <body>
     <div class="container">
         <div class="content">
             <div class="info-box">
-                <p class="status-text">✓ 已强制启用 HEVC 解码</p>
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <p class="status-text" id="status-text" data-i18n="statusEnabled"></p>
+                    <label class="switch">
+                        <input type="checkbox" id="toggle-switch" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
             </div>
 
             <div class="help-box">
-                <p class="help-title">遇到问题？</p>
-                <p class="help-text">如果视频播放有声音无画面，请安装 <a href="#" id="hevc-link" class="hevc-link">HEVC 扩展</a>。</p>
+                <p class="help-title" data-i18n="helpTitle"></p>
+                <p class="help-text">
+                    <span data-i18n="helpText"></span>
+                    <a href="#" id="hevc-link" class="hevc-link" data-i18n="hevcExtension"></a>。
+                </p>
             </div>
         </div>
     </div>

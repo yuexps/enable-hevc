@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HEVC Support Test Page</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { 
+      font-family: system-ui, -apple-system, sans-serif; 
+      max-width: 1400px; 
+      margin: 30px auto; 
+      padding: 20px;
+      background: #f8f9fa;
+    }
+    .container {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      position: relative;
+    }
+    .top-retest-btn {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      padding: 10px 20px;
+      font-size: 14px;
+      cursor: pointer;
+      background: #0078d4;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      transition: background 0.2s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .top-retest-btn:hover {
+      background: #005a9e;
+    }
+    h1 { 
+      color: #333; 
+      margin-top: 0;
+      margin-bottom: 10px;
+      padding-right: 120px;
+    }
+    .subtitle {
+      color: #666;
+      margin-bottom: 25px;
+    }
+    .info-box {
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+    }
+    .info-box h3 {
+      margin: 0 0 12px 0;
+      color: #856404;
+    }
+    .info-box ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+    .info-box li {
+      margin: 8px 0;
+    }
+    .content-wrapper { 
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+      margin-top: 25px;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e9ecef;
+    }
+    .section-header h2 {
+      margin: 0;
+      font-size: 20px;
+      color: #333;
+    }
+    .test-item { 
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 8px;
+      background: #f5f5f5;
+      border: 1px solid #dee2e6;
+    }
+    .supported { 
+      background: #d4edda;
+      border-color: #c3e6cb;
+      color: #155724;
+    }
+    .not-supported { 
+      background: #f8d7da;
+      border-color: #f5c6cb;
+      color: #721c24;
+    }
+    code { 
+      background: #e9ecef;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Consolas', monospace;
+      font-size: 13px;
+    }
+    .explanation-box {
+      background: #e7f3ff;
+      border: 1px solid #0078d4;
+      padding: 20px;
+      border-radius: 8px;
+      height: 100%;
+    }
+    .explanation-box h3 {
+      margin: 0 0 15px 0;
+      color: #0078d4;
+    }
+    .explanation-box ul {
+      margin: 0;
+      padding-left: 20px;
+      line-height: 1.8;
+    }
+    .explanation-box li {
+      margin: 10px 0;
+    }
+    @media (max-width: 968px) {
+      .content-wrapper { 
+        grid-template-columns: 1fr;
+      }
+      body {
+        margin: 15px;
+        padding: 10px;
+      }
+      .container {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <button onclick="runTests()" class="top-retest-btn">Retest</button>
+    
+    <h1>HEVC Decoder Test Page</h1>
+    <p class="subtitle">This page tests whether your browser supports HEVC (H.265) video codec.</p>
+    
+    <div class="info-box">
+      <h3>📋 Testing Instructions</h3>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; align-items: start;">
+        <div>
+          <p style="margin: 0 0 8px 0;"><strong>After installing the extension</strong>, refresh this page to see HEVC support results</p>
+          <p style="margin: 0;"><strong>Toggle functionality</strong>: Click the extension icon to enable/disable HEVC support</p>
+        </div>
+        <div>
+          <p style="margin: 0 0 5px 0;">• <strong>When enabled</strong>: All HEVC codecs show as "Supported"</p>
+          <p style="margin: 0 0 5px 0;">• <strong>When disabled</strong>: Returns to browser's native detection results</p>
+          <p style="margin: 0;">• After toggling, <strong>refresh the page</strong> or click "Retest" button</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="content-wrapper">
+      <div>
+        <div class="section-header">
+          <h2>Test Results</h2>
+        </div>
+        <div id="results"></div>
+      </div>
+      
+      <div>
+        <div class="explanation-box">
+          <h3>ℹ️ Codec Explanation</h3>
+          <ul>
+            <li><strong>hev1 / hvc1</strong>: Two packaging format identifiers for HEVC (H.265)
+              <ul style="margin-top: 5px;">
+                <li>hev1: Standard HEVC format for MP4 files</li>
+                <li>hvc1: HEVC format for streaming media</li>
+              </ul>
+            </li>
+            <li><strong>1.6.L93.B0</strong>: Detailed codec configuration parameters
+              <ul style="margin-top: 5px;">
+                <li>1 = Profile (Main)</li>
+                <li>6 = Level (Level 3.1)</li>
+                <li>L93 = Tier constraints</li>
+                <li>B0 = Bit depth (8-bit)</li>
+              </ul>
+            </li>
+            <li><strong>How It Works</strong>:
+              <ul style="margin-top: 5px;">
+                <li>✅ <strong>When Enabled</strong>: Extension intercepts detection, tells websites browser "supports" HEVC</li>
+                <li>🎬 Media servers send HEVC video directly, no transcoding to H.264 needed</li>
+                <li>⚡ Reduces server load, saves bandwidth, improves video quality</li>
+                <li>❌ <strong>When Disabled</strong>: Returns to native browser detection, websites may transcode videos</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function runTests() {
+      const codecs = [
+        'video/mp4; codecs="hev1"',
+        'video/mp4; codecs="hvc1"',
+        'video/mp4; codecs="hev1.1.6.L93.B0"',
+        'video/mp4; codecs="hvc1.1.6.L93.B0"'
+      ];
+
+      const video = document.createElement('video');
+      const resultsDiv = document.getElementById('results');
+      resultsDiv.innerHTML = ''; // Clear previous results
+
+      codecs.forEach(codec => {
+        const result = video.canPlayType(codec);
+        const div = document.createElement('div');
+        div.className = 'test-item ' + (result ? 'supported' : 'not-supported');
+        div.innerHTML = `
+          <strong>${result ? '✓ Supported' : '✗ Not Supported'}</strong><br>
+          Codec: <code>${codec}</code><br>
+          Return value: <code>${result || '""'}</code>
+        `;
+        resultsDiv.appendChild(div);
+      });
+
+      // MediaSource API test
+      if (window.MediaSource && MediaSource.isTypeSupported) {
+        const div = document.createElement('div');
+        const supported = MediaSource.isTypeSupported('video/mp4; codecs="hev1"');
+        div.className = 'test-item ' + (supported ? 'supported' : 'not-supported');
+        div.innerHTML = `
+          <strong>${supported ? '✓ Supported' : '✗ Not Supported'}</strong><br>
+          MediaSource API: <code>isTypeSupported("video/mp4; codecs=\\"hev1\\"")</code><br>
+          Return value: <code>${supported}</code>
+        `;
+        resultsDiv.appendChild(div);
+      }
+    }
+
+    // Wait for extension ready event
+    window.addEventListener('hevc-extension-ready', () => {
+      runTests();
+    }, { once: true });
+
+    // Fallback: Run tests if extension event not received (extension not installed)
+    setTimeout(() => {
+      if (!document.getElementById('results').innerHTML) {
+        runTests();
+      }
+    }, 80);
+  </script>
+</body>
+</html>

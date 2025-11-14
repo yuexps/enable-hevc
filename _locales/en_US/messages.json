@@ -1,0 +1,34 @@
+{
+  "appName": {
+    "message": "HEVC Decoder - Force Enable",
+    "description": "Extension name"
+  },
+  "appDescription": {
+    "message": "Enable HEVC (H.265) video playback support in Microsoft Edge, prevent unnecessary video transcoding",
+    "description": "Extension description"
+  },
+  "popupTitle": {
+    "message": "Force Enable HEVC Decoding",
+    "description": "Popup window title"
+  },
+  "statusEnabled": {
+    "message": "✓ HEVC decoding force enabled",
+    "description": "Enabled status text"
+  },
+  "statusDisabled": {
+    "message": "✗ HEVC decoding disabled",
+    "description": "Disabled status text"
+  },
+  "helpTitle": {
+    "message": "Having issues?",
+    "description": "Help section title"
+  },
+  "helpText": {
+    "message": "If video has audio but no picture, please install",
+    "description": "Help section text"
+  },
+  "hevcExtension": {
+    "message": "HEVC Extension",
+    "description": "HEVC extension link text"
+  }
+}

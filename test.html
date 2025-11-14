@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HEVC 支持测试页面</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { 
+      font-family: system-ui, -apple-system, sans-serif; 
+      max-width: 1400px; 
+      margin: 30px auto; 
+      padding: 20px;
+      background: #f8f9fa;
+    }
+    .container {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      position: relative;
+    }
+    .top-retest-btn {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      padding: 10px 20px;
+      font-size: 14px;
+      cursor: pointer;
+      background: #0078d4;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      transition: background 0.2s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .top-retest-btn:hover {
+      background: #005a9e;
+    }
+    h1 { 
+      color: #333; 
+      margin-top: 0;
+      margin-bottom: 10px;
+      padding-right: 120px;
+    }
+    .subtitle {
+      color: #666;
+      margin-bottom: 25px;
+    }
+    .info-box {
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+    }
+    .info-box h3 {
+      margin: 0 0 12px 0;
+      color: #856404;
+    }
+    .info-box ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+    .info-box li {
+      margin: 8px 0;
+    }
+    .content-wrapper { 
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+      margin-top: 25px;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e9ecef;
+    }
+    .section-header h2 {
+      margin: 0;
+      font-size: 20px;
+      color: #333;
+    }
+    .test-item { 
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 8px;
+      background: #f5f5f5;
+      border: 1px solid #dee2e6;
+    }
+    .supported { 
+      background: #d4edda;
+      border-color: #c3e6cb;
+      color: #155724;
+    }
+    .not-supported { 
+      background: #f8d7da;
+      border-color: #f5c6cb;
+      color: #721c24;
+    }
+    code { 
+      background: #e9ecef;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Consolas', monospace;
+      font-size: 13px;
+    }
+    .explanation-box {
+      background: #e7f3ff;
+      border: 1px solid #0078d4;
+      padding: 20px;
+      border-radius: 8px;
+      height: 100%;
+    }
+    .explanation-box h3 {
+      margin: 0 0 15px 0;
+      color: #0078d4;
+    }
+    .explanation-box ul {
+      margin: 0;
+      padding-left: 20px;
+      line-height: 1.8;
+    }
+    .explanation-box li {
+      margin: 10px 0;
+    }
+    @media (max-width: 968px) {
+      .content-wrapper { 
+        grid-template-columns: 1fr;
+      }
+      body {
+        margin: 15px;
+        padding: 10px;
+      }
+      .container {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <button onclick="runTests()" class="top-retest-btn">重新测试</button>
+    
+    <h1>HEVC 解码器测试页面</h1>
+    <p class="subtitle">此页面用于测试浏览器是否支持 HEVC (H.265) 视频编解码器。</p>
+    
+    <div class="info-box">
+      <h3>📋 测试说明</h3>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; align-items: start;">
+        <div>
+          <p style="margin: 0 0 8px 0;"><strong>安装扩展后</strong>，刷新此页面，应自动显示 HEVC 支持结果</p>
+          <p style="margin: 0;"><strong>开关功能</strong>：点击扩展图标可启用/禁用 HEVC 支持</p>
+        </div>
+        <div>
+          <p style="margin: 0 0 5px 0;">• <strong>启用时</strong>：所有 HEVC 编解码器显示为"支持"</p>
+          <p style="margin: 0 0 5px 0;">• <strong>禁用时</strong>：恢复浏览器原生检测结果</p>
+          <p style="margin: 0;">• 切换后需<strong>刷新页面</strong>或点击"重新测试"按钮</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="content-wrapper">
+      <div>
+        <div class="section-header">
+          <h2>测试结果</h2>
+        </div>
+        <div id="results"></div>
+      </div>
+      
+      <div>
+        <div class="explanation-box">
+          <h3>ℹ️ 编解码器说明</h3>
+          <ul>
+            <li><strong>hev1 / hvc1</strong>：HEVC (H.265) 的两种封装格式标识符
+              <ul style="margin-top: 5px;">
+                <li>hev1：用于 MP4 文件的标准 HEVC 格式</li>
+                <li>hvc1：用于流媒体的 HEVC 格式</li>
+              </ul>
+            </li>
+            <li><strong>1.6.L93.B0</strong>：详细的编解码器配置参数
+              <ul style="margin-top: 5px;">
+                <li>1 = Profile (Main)</li>
+                <li>6 = Level (Level 3.1)</li>
+                <li>L93 = 层级约束</li>
+                <li>B0 = 位深度 (8-bit)</li>
+              </ul>
+            </li>
+            <li><strong>作用</strong>：
+              <ul style="margin-top: 5px;">
+                <li>✅ <strong>启用时</strong>：扩展拦截检测,告诉网站浏览器"支持" HEVC</li>
+                <li>🎬 媒体服务器会直接发送 HEVC 视频,无需转码为 H.264</li>
+                <li>⚡ 减少服务器负载,节省带宽,提升画质</li>
+                <li>❌ <strong>禁用时</strong>：恢复浏览器原生检测,网站可能会转码视频</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function runTests() {
+      const codecs = [
+        'video/mp4; codecs="hev1"',
+        'video/mp4; codecs="hvc1"',
+        'video/mp4; codecs="hev1.1.6.L93.B0"',
+        'video/mp4; codecs="hvc1.1.6.L93.B0"'
+      ];
+
+      const video = document.createElement('video');
+      const resultsDiv = document.getElementById('results');
+      resultsDiv.innerHTML = ''; // 清空之前的结果
+
+      codecs.forEach(codec => {
+        const result = video.canPlayType(codec);
+        const div = document.createElement('div');
+        div.className = 'test-item ' + (result ? 'supported' : 'not-supported');
+        div.innerHTML = `
+          <strong>${result ? '✓ 支持' : '✗ 不支持'}</strong><br>
+          编解码器: <code>${codec}</code><br>
+          返回值: <code>${result || '""'}</code>
+        `;
+        resultsDiv.appendChild(div);
+      });
+
+      // MediaSource API 测试
+      if (window.MediaSource && MediaSource.isTypeSupported) {
+        const div = document.createElement('div');
+        const supported = MediaSource.isTypeSupported('video/mp4; codecs="hev1"');
+        div.className = 'test-item ' + (supported ? 'supported' : 'not-supported');
+        div.innerHTML = `
+          <strong>${supported ? '✓ 支持' : '✗ 不支持'}</strong><br>
+          MediaSource API: <code>isTypeSupported("video/mp4; codecs=\\"hev1\\"")</code><br>
+          返回值: <code>${supported}</code>
+        `;
+        resultsDiv.appendChild(div);
+      }
+    }
+
+    // 如果扩展注入了，会触发自定义事件；优先等待该事件
+    window.addEventListener('hevc-extension-ready', () => {
+      runTests();
+    }, { once: true });
+
+    // 兜底：如果在短时间内没有收到扩展就绪事件，立即执行测试（表示扩展未安装）
+    setTimeout(() => {
+      if (!document.getElementById('results').innerHTML) {
+        runTests();
+      }
+    }, 80);
+  </script>
+</body>
+</html>
