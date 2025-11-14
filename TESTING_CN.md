@@ -9,19 +9,20 @@
 4. 点击"加载解压的扩展"并选择扩展文件夹
 
 ### 步骤 2: 测试基本功能
-1. 在 Edge 浏览器中打开 `test.html`
+1. 访问在线测试页面: https://yuexps.github.io/enable-hevc/test.html
+   - 或在浏览器中打开本地 `test.html` 文件
 2. **预期结果**: 所有 HEVC 编解码器显示"✓ 支持",返回值为 "maybe" 或 "true"
 
 ### 步骤 3: 测试开关功能
 1. 点击工具栏中的扩展图标
 2. **预期**: 弹出窗口显示一个开关
 3. 将开关**关闭**（向左滑动）
-4. 刷新 `test.html`
+4. 刷新测试页面
 5. **预期结果**: 所有 HEVC 编解码器现在显示"✗ 不支持",返回值为空
 
 ### 步骤 4: 验证开关持久化
 1. 再次将开关**打开**
-2. 刷新 `test.html`
+2. 刷新测试页面
 3. **预期结果**: 恢复到"✓ 支持"状态
 
 ## 扩展功能说明
@@ -38,7 +39,9 @@
 - `content.js` - 向网页注入代码
 - `inject.js` - 拦截浏览器 API
 - `popup.html/js/css` - 开关界面
-- `test.html` - 测试演示页面
+- `test.html` - 中文测试演示页面 (在线: https://yuexps.github.io/enable-hevc/test.html)
+- `test_en.html` - 英文测试演示页面 (在线: https://yuexps.github.io/enable-hevc/test_en.html)
+
 
 ### 开关工作原理
 1. 用户点击扩展图标 → 打开弹出窗口

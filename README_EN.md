@@ -18,16 +18,21 @@ Force enable HEVC (H.265) video playback support for Microsoft Edge.
 
 ## Testing the Extension
 
-**Method 1: Using Test Page**
-1. Open the `test.html` file in this project
-2. Before installation: All items show "✗ Not Supported"
-3. After installation: Refresh the page, all items show "✓ Supported"
-4. Test toggle functionality:
-   - Click extension icon, turn off the switch
-   - Refresh test.html, should show "✗ Not Supported"
-   - Turn on the switch again, refresh to see "✓ Supported"
+**Method 1: Using Online Test Page**
+- Visit: https://yuexps.github.io/enable-hevc/test_en.html
+- Before installation: All items show "✗ Not Supported"
+- After installation: Refresh the page, all items show "✓ Supported"
+- Test toggle functionality:
+  - Click extension icon, turn off the switch
+  - Refresh the page, should show "✗ Not Supported"
+  - Turn on the switch again, refresh to see "✓ Supported"
 
-**Method 2: Browser Console Test**
+**Method 2: Using Local Test Page**
+1. Open the `test_en.html` file in this project
+2. Enable "Allow access to file URLs" for the extension in `edge://extensions/`
+3. Follow the steps in Method 1 to test
+
+**Method 3: Browser Console Test**
 1. Press F12 to open Developer Tools
 2. In the Console, type:
    ```javascript
@@ -35,7 +40,7 @@ Force enable HEVC (H.265) video playback support for Microsoft Edge.
    ```
 3. Before installation returns `""`, after installation returns `"maybe"`
 
-**Method 3: Real Video Test**
+**Method 4: Real Video Test**
 - Visit media websites that support HEVC (e.g., Plex, Emby)
 - The extension prevents unnecessary transcoding by the server
 

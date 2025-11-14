@@ -9,19 +9,20 @@
 4. Click "Load unpacked" and select the extension folder
 
 ### Step 2: Test Basic Functionality
-1. Open `test_en.html` in Edge browser
+1. Visit the online test page: https://yuexps.github.io/enable-hevc/test_en.html
+   - Or open the local `test_en.html` file in browser
 2. **Expected Result**: All HEVC codecs should show "✓ Supported" with return value "maybe" or "true"
 
 ### Step 3: Test Toggle Switch
 1. Click the extension icon in the toolbar
 2. **Expected**: A popup with a toggle switch appears
 3. Turn OFF the switch (slide to left)
-4. Refresh `test_en.html`
+4. Refresh the test page
 5. **Expected Result**: All HEVC codecs now show "✗ Not Supported" with empty return values
 
 ### Step 4: Verify Toggle Persistence
 1. Turn ON the switch again
-2. Refresh `test_en.html`
+2. Refresh the test page
 3. **Expected Result**: Returns to "✓ Supported" state
 
 ## What This Extension Does
@@ -38,7 +39,8 @@
 - `content.js` - Injects code into web pages
 - `inject.js` - Intercepts browser APIs
 - `popup.html/js/css` - Toggle switch interface
-- `test_en` - Demo page for testing
+- `test.html` - Chinese test demo page (Online: https://yuexps.github.io/enable-hevc/test.html)
+- `test_en.html` - English test demo page (Online: https://yuexps.github.io/enable-hevc/test_en.html)
 
 ### How Toggle Works
 1. User clicks extension icon → Opens popup
